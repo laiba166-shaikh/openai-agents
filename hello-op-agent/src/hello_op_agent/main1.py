@@ -13,7 +13,7 @@ client = AsyncOpenAI(api_key=gemini_api_key, base_url="https://generativelanguag
 set_tracing_disabled(disabled=True)
 
 async def main():
-    '''Use OpenAI agent with Google provider gemini model at agent level'''
+    '''Use OpenAI agent with Google provider gemini model at - Agent Level'''
     agent = Agent(
         name="Assistant",
         instructions="You are a helpful assistant",

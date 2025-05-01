@@ -2,30 +2,32 @@ import os
 import asyncio
 from dotenv import load_dotenv
 from openai import AsyncOpenAI
-from agents import Agent, OpenAIChatCompletionsModel, Runner, set_default_openai_client, set_default_openai_api
+from agents import Agent, OpenAIChatCompletionsModel, Runner, set_tracing_disabled
+from agents.run import RunConfig
 
 load_dotenv()
 
 gemini_api_key = os.getenv('GEMINI_API_KEY')
 client = AsyncOpenAI(api_key=gemini_api_key, base_url="https://generativelanguage.googleapis.com/v1beta/openai/")
 
-# what's the point?
-set_default_openai_api("chat_completions")
-set_default_openai_client(client)
-
 model=OpenAIChatCompletionsModel(model="gemini-2.0-flash",openai_client=client)
 
-def main():
-    '''Use OpenAI agent with Google provider gemini model Global'''
+async def main():
+    '''Use OpenAI agent with Google provider gemini model using RUN config -  ASYNC'''
+    
+    config = RunConfig(
+        model=model,
+        model_provider=client,
+        tracing_disabled=True
+    )
     
     agent = Agent(
         name ="Assistant",
         instructions="You're are helpful assistant.",
-        model=model
     )
     
-    result = Runner.run_sync(agent, "Hello, What you do?")
+    result = await Runner.run(agent, "Hello, What you do?", run_config=config)
     print(result.final_output)
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
