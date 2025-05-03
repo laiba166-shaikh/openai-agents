@@ -32,7 +32,7 @@ agent = Agent(name='Assisstant', instructions="You're are helpful assistant that
 @cl.on_chat_start
 async def handle_chat_start():
     cl.user_session.set('history', [])
-    await cl.Message(content=f"Hello, I am your beautiful helful Assistant. How can I help you today").send()
+    await cl.Message(content=f"Hello, I am your helful Assistant. How can I help you today").send()
 
 @cl.on_message
 async def main(message:cl.Message):
